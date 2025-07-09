@@ -1,100 +1,105 @@
-import { Button, Input } from '@heroui/react'
-import React from 'react'
-import { Controller, useForm } from 'react-hook-form'
+"use client"
+
+import { Button } from '@heroui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { RegisterSchema } from '~/schemas/formSchemas';
+import { z } from 'zod';
+import { useRouter } from 'next/navigation';
+import axios, { AxiosError } from 'axios';
+import { Icons } from '../icons/Icons';
+import InputField from '../common/InputField';
+import axiosInstance from '~/libs/axiosInstance';
+
+type RegisterInput = z.infer<typeof RegisterSchema>;
 
 const RegisterForm = () => {
-    const form = useForm({
+    const [isVisible, setIsVisible] = React.useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
+    const router = useRouter();
+    const [serverError, setServerError] = useState<string | null>(null);
+
+    const form = useForm<RegisterInput>({
         defaultValues: {
             fullname: '',
             email: '',
             password: '',
             confirmPassword: ''
         },
-        mode: 'onChange',
-        reValidateMode: 'onChange'
-    })
+        resolver: zodResolver(RegisterSchema),
+        mode: 'onChange'
+    });
+
+    const onSubmit = async (data: RegisterInput) => {
+        setServerError(null);
+        try {
+            await axiosInstance.post('/register', {
+                fullname: data.fullname,
+                email: data.email,
+                password: data.password,
+            });
+
+            router.push('/login');
+
+        } catch (error: any) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{ message: string }>;
+                setServerError(axiosError.response?.data?.message || 'Gagal membuat akun.');
+            } else {
+                setServerError('Terjadi kesalahan yang tidak terduga.');
+            }
+        }
+    };
+
+    const { formState, handleSubmit } = form;
+
     return (
-        <form className="space-y-5">
-            <Controller name='fullname' control={form.control} render={({ field, fieldState }) => (
-                <Input
-                    type="text"
-                    placeholder='Nama Lengkap'
-                    autoComplete="nama-lengkap"
-                    required
-                    radius='sm'
-                    isInvalid={Boolean(fieldState.error)}
-                    errorMessage={fieldState.error?.message}
-                    classNames={{
-                        inputWrapper: [
-                            "block w-full rounded-md border-0 !bg-white/5 py-2 px-3 text-white shadow-sm ring-1 ring-inset ring-zinc-700 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition data-[hover=true]:bg-white/10"
-                        ],
-                        input: ["!text-white"]
-                    }}
-                />
-            )} />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {serverError && (
+                <div className="p-3 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+                    {serverError}
+                </div>
+            )}
 
-            <Controller name='email' control={form.control} render={({ field, fieldState }) => (
-                <Input
-                    type="email"
-                    placeholder='Email'
-                    autoComplete="email"
-                    required
-                    radius='sm'
-                    isInvalid={Boolean(fieldState.error)}
-                    errorMessage={fieldState.error?.message}
-                    classNames={{
-                        inputWrapper: [
-                            "block w-full rounded-md border-0 bg-white/5 py-2 px-3 text-white shadow-sm ring-1 ring-inset ring-zinc-700 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition data-[hover=true]:bg-white/10"
-                        ],
-                        input: ["!text-white"]
-                    }}
-                />
-            )} />
+            <InputField control={form.control} type='text' name='fullname' placeholder='Nama Lengkap'
+                autoComplete="name"
+                radius='sm' required />
 
-            <Controller name='password' control={form.control} render={({ field, fieldState }) => (
-                <Input
-                    type="password"
-                    placeholder='Password'
-                    required
-                    radius='sm'
-                    isInvalid={Boolean(fieldState.error)}
-                    errorMessage={fieldState.error?.message}
-                    classNames={{
-                        inputWrapper: [
-                            "block w-full rounded-md border-0 bg-white/5 py-2 px-3 text-white shadow-sm ring-1 ring-inset ring-zinc-700 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition data-[hover=true]:bg-white/10"
-                        ],
-                        input: ["!text-white"]
-                    }}
-                />
-            )} />
-            <Controller name='confirmPassword' control={form.control} render={({ field, fieldState }) => (
-                <Input
-                    type="password"
-                    placeholder='Konfirmasi Password'
-                    required
-                    radius='sm'
-                    isInvalid={Boolean(fieldState.error)}
-                    errorMessage={fieldState.error?.message}
-                    classNames={{
-                        inputWrapper: [
-                            "block w-full rounded-md border-0 bg-white/5 py-2 px-3 text-white shadow-sm ring-1 ring-inset ring-zinc-700 placeholder:text-zinc-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition data-[hover=true]:bg-white/10"
-                        ],
-                        input: ["!text-white"]
-                    }}
-                />
-            )} />
+            <InputField control={form.control} type='email' name='email' placeholder='Email'
+                autoComplete="email"
+                radius='sm' required />
 
-            {/* Tombol Submit */}
+            <InputField control={form.control} type={isVisible ? 'text' : 'password'} name='password' placeholder='Password' required
+                radius='sm' endContent={
+                    <button
+                        aria-label="toggle password visibility"
+                        className="focus:outline-none cursor-pointer"
+                        type="button"
+                        onClick={toggleVisibility}
+                    >
+                        {isVisible ? (
+                            <Icons.EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                        ) : (
+                            <Icons.EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                        )}
+                    </button>
+                } />
+
+            <InputField control={form.control} type='password' name='confirmPassword' required placeholder='Konfirmasi Password' radius='sm' />
+
             <div className="pt-2" >
                 <Button
                     type="submit"
-                    className="flex w-full justify-center rounded-md bg-[#5AE3A8] px-3 py-2.5 text-sm font-semibold leading-6 text-zinc-800 shadow-sm hover:bg-[#5AE3A8]/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5AE3A8] transition"
+                    disabled={formState.isSubmitting}
+                    className="flex w-full justify-center rounded-md bg-[#5AE3A8] px-3 py-2.5 text-sm font-semibold leading-6 text-zinc-800 shadow-sm hover:bg-[#5AE3A8]/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5AE3A8] transition disabled:opacity-50"
                 >
-                    Buat Akun
+                    {formState.isSubmitting ? 'Mendaftarkan...' : 'Buat Akun'}
                 </Button>
             </div>
         </form >
-    )
-}
+    );
+};
 
-export default RegisterForm
+export default RegisterForm;

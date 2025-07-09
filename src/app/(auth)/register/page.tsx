@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { Suspense } from 'react'
 import RegisterForm from '~/components/form/RegisterForm'
 import PageContainer from '~/components/layouts/PageContainer'
 
@@ -30,7 +30,6 @@ const Register = () => {
                 Dapatkan tiket acara favoritmu dengan mudah dan cepat.
               </p>
             </div>
-
             <RegisterForm />
 
             <p className="mt-8 text-center text-sm text-zinc-400">
