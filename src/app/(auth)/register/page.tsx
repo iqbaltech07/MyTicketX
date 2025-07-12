@@ -1,10 +1,14 @@
-"use client"
-
+import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { Suspense } from 'react'
-import RegisterForm from '~/components/form/RegisterForm'
+import React from 'react'
+import RegisterForm from '~/components/forms/RegisterForm'
 import PageContainer from '~/components/layouts/PageContainer'
+
+export const metadata: Metadata = {
+  title: "MyTicketX - Register",
+  description: "Create your MyTicketX account to buy and sell event tickets easily.",
+};
 
 const Register = () => {
   return (
@@ -19,7 +23,7 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Kolom Kanan: Form Registrasi */}
+        {/* Form Registrasi */}
         <div className="flex items-center justify-center p-8 sm:p-12">
           <div className="w-full max-w-md">
             <div className="mb-8 text-center lg:text-left">

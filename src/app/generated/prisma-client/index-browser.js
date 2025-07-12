@@ -127,6 +127,7 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   password: 'password',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -146,17 +147,27 @@ exports.Prisma.AccountScalarFieldEnum = {
   session_state: 'session_state'
 };
 
-exports.Prisma.SessionScalarFieldEnum = {
+exports.Prisma.EventScalarFieldEnum = {
   id: 'id',
-  sessionToken: 'sessionToken',
+  name: 'name',
+  date: 'date',
+  type: 'type',
+  location: 'location',
+  onlineUrl: 'onlineUrl',
+  description: 'description',
   userId: 'userId',
-  expires: 'expires'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.VerificationTokenScalarFieldEnum = {
-  identifier: 'identifier',
-  token: 'token',
-  expires: 'expires'
+exports.Prisma.TicketScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  price: 'price',
+  quantity: 'quantity',
+  eventId: 'eventId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -173,13 +184,21 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Role = exports.$Enums.Role = {
+  ADMIN: 'ADMIN',
+  USER: 'USER'
+};
 
+exports.EventType = exports.$Enums.EventType = {
+  ONLINE: 'ONLINE',
+  OFFLINE: 'OFFLINE'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
-  Session: 'Session',
-  VerificationToken: 'VerificationToken'
+  Event: 'Event',
+  Ticket: 'Ticket'
 };
 
 /**

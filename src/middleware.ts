@@ -7,7 +7,7 @@ export function mainMiddleware(req: NextRequest, event: NextFetchEvent) {
   return res;
 }
 
-const publicPages = ['/login', '/register'];
+const publicPages = ['/login', '/register', "/admin/login"];
 
 export default withAuth(mainMiddleware, publicPages);
 
