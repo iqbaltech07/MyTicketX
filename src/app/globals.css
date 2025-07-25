@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #1A1A1F;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -17,8 +17,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1A1A1F;
+    --foreground: #ffffff;
   }
 }
 
@@ -26,4 +26,32 @@ body {
   background: var(--background);
   color: var(--foreground) !important;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+/* .swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #444;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

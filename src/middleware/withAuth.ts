@@ -1,10 +1,10 @@
-import { getToken } from "next-auth/jwt";
 import {
   type NextRequest,
   type NextFetchEvent,
   type NextMiddleware,
   NextResponse,
 } from "next/server";
+import { useToken } from "~/hooks/useToken";
 
 export function withAuth(
   middleware: NextMiddleware,
@@ -12,37 +12,34 @@ export function withAuth(
 ) {
   return async (req: NextRequest, event: NextFetchEvent) => {
     const { pathname } = req.nextUrl;
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const token = await useToken(req);
 
     const isAdminRoute = pathname.startsWith("/admin");
     const isAuthPage =
-      pathname.startsWith("/login") ||
-      pathname.startsWith("/register") ||
-      pathname.startsWith("/admin/login");
+      pathname === "/login" ||
+      pathname === "/register" ||
+      pathname === "/admin/login";
 
     if (token) {
+      // Jika user sudah login dan mengakses halaman login/register, redirect
       if (isAuthPage) {
         const redirectUrl = token.role === "ADMIN" ? "/admin/dashboard" : "/";
         return NextResponse.redirect(new URL(redirectUrl, req.url));
       }
 
-      // jika user bukan admin maka redirect ke halaman utama user
+      // Jika user bukan admin, tapi akses /admin
       if (isAdminRoute && token.role !== "ADMIN") {
         return NextResponse.redirect(new URL("/", req.url));
       }
     }
 
+    // Jika belum login dan bukan public page, redirect ke login
     if (!token) {
-      const isPublicPage = publicPages.some((page) =>
-        pathname.startsWith(page)
-      );
+      const isPublicPage = publicPages.includes(pathname);
 
       if (!isPublicPage) {
         let loginUrlPath = "/login";
-
-        if (isAdminRoute) {
-          loginUrlPath = "/admin/login";
-        }
+        if (isAdminRoute) loginUrlPath = "/admin/login";
 
         const loginUrl = new URL(loginUrlPath, req.url);
         loginUrl.searchParams.set("callbackUrl", pathname);

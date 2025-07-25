@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import React from 'react'
-import LoginForm from '~/components/forms/LoginForm'
+import LoginForm from '~/components/ui/LoginForm'
 import PageContainer from '~/components/layouts/PageContainer'
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const LoginAdmin = () => {
     return (
-        <PageContainer className="flex h-dvh items-center justify-center bg-zinc-950 p-4">
+        <PageContainer className="flex h-dvh items-center justify-center bg-[#09090b] p-4">
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -23,7 +23,7 @@ const LoginAdmin = () => {
                     </p>
                 </div>
 
-                <div className="bg-zinc-900/50 p-8 rounded-xl border border-zinc-800">
+                <div className="bg-[#202027] p-8 rounded-xl border border-zinc-800">
                     <LoginForm />
                 </div>
 
