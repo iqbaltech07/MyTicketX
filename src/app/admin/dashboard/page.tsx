@@ -1,5 +1,5 @@
 import PageContainer from '~/components/layouts/PageContainer'
-import StatCard from '~/components/StatCard/StatCard'
+import StatCard from '~/components/ui/StatCard'
 import { getDashboardStats } from '~/libs/data'
 
 const Dashboard = async () => {

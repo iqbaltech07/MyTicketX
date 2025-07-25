@@ -1,7 +1,9 @@
-import { getAllUsers } from "~/libs/data";
 import PageContainer from "../components/layouts/PageContainer";
 import SectionContainer from "~/components/layouts/SectionContainer";
 import { Metadata } from "next";
+import BannerSection from "~/components/section/BannerSection";
+import LatestSection from "~/components/section/LatestSection";
+import UpcomingSection from "~/components/section/UpcomingSection";
 
 export const metadata: Metadata = {
   title: "MyTicketX - Home",
@@ -10,12 +12,18 @@ export const metadata: Metadata = {
 };
 
 const Home = async () => {
-  const users = await getAllUsers()
-  console.log(users);
+  // const users = await getAllUsers()
+  // console.log(users);
   return (
-    <PageContainer>
+    <PageContainer withNavbar withFooter className="bg-[#1A1A1F]">
+      <SectionContainer className="h-[600px]">
+        <BannerSection />
+      </SectionContainer>
       <SectionContainer>
-        <h2>Test</h2>
+        <LatestSection />
+      </SectionContainer>
+      <SectionContainer className="mt-10">
+        <UpcomingSection />
       </SectionContainer>
     </PageContainer>
   );

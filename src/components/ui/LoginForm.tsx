@@ -65,12 +65,7 @@ const LoginForm = () => {
                 radius='sm' />
 
             <div>
-                <div className="flex items-center justify-end">
-                    <a href="#" className="font-semibold text-blue-500 hover:text-blue-400 transition text-sm">
-                        Lupa password?
-                    </a>
-                </div>
-                <div className='mt-2'>
+                <div className='mb-2'>
                     <InputField
                         control={form.control}
                         type={isVisible ? 'text' : 'password'}
@@ -94,6 +89,11 @@ const LoginForm = () => {
                             </button>
                         }
                     />
+                </div>
+                <div className="flex items-center justify-end">
+                    <a href="#" className="font-semibold text-blue-500 hover:text-blue-400 transition text-sm">
+                        Lupa password?
+                    </a>
                 </div>
             </div>
 
