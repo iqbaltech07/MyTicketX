@@ -31,7 +31,7 @@ declare module "@auth/core/adapters" {
     id: string;
     email: string;
     emailVerified: Date | null;
-    role: string; 
+    role: string;
   }
 }
 
@@ -62,6 +62,12 @@ const handler = NextAuth({
         if (!user || !user.password) {
           throw new Error(
             "Email tidak ditemukan atau akun tidak memiliki password."
+          );
+        }
+
+        if (!user.emailVerified) {
+          throw new Error(
+            "Akun Anda belum diverifikasi. Silakan cek email Anda."
           );
         }
 

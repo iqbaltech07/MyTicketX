@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from '@heroui/react';
+import { Button, Form } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -52,7 +52,7 @@ const LoginForm = () => {
     const { formState, handleSubmit } = form;
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <Form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {serverError && (
                 <div className="p-3 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                     {serverError}
@@ -64,8 +64,8 @@ const LoginForm = () => {
                 required
                 radius='sm' />
 
-            <div>
-                <div className='mb-2'>
+            <div className='w-full'>
+                <div className='mb-2 w-full'>
                     <InputField
                         control={form.control}
                         type={isVisible ? 'text' : 'password'}
@@ -97,7 +97,7 @@ const LoginForm = () => {
                 </div>
             </div>
 
-            <div>
+            <div className='w-full'>
                 <Button
                     type="submit"
                     disabled={formState.isSubmitting}
@@ -106,7 +106,7 @@ const LoginForm = () => {
                     {formState.isSubmitting ? 'Logging in...' : 'Log in'}
                 </Button>
             </div>
-            <div className="relative my-6">
+            <div className="relative my-6 w-full">
                 <div className="absolute inset-0 flex items-center" aria-hidden="true">
                     <div className="w-full border-t border-zinc-700" />
                 </div>
@@ -117,7 +117,7 @@ const LoginForm = () => {
                 </div>
             </div>
 
-            <div>
+            <div className='w-full'>
                 <Button
                     type="button"
                     onClick={handleGoogleSignIn}
@@ -134,7 +134,7 @@ const LoginForm = () => {
                     </span>
                 </Button>
             </div>
-        </form>
+        </Form>
     );
 };
 
