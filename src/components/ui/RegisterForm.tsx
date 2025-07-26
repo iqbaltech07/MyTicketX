@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from '@heroui/react';
+import { Button, Form } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -41,22 +41,18 @@ const RegisterForm = () => {
                 password: data.password,
             });
 
-            router.push('/login');
+            localStorage.setItem('emailForVerification', data.email);
+            router.push('/verify');
 
         } catch (error: any) {
-            if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<{ message: string }>;
-                setServerError(axiosError.response?.data?.message || 'Gagal membuat akun.');
-            } else {
-                setServerError('Terjadi kesalahan yang tidak terduga.');
-            }
+            setServerError(error.response?.data?.message || 'Terjadi kesalahan saat mendaftar. Silakan coba lagi.');
         }
     };
 
     const { formState, handleSubmit } = form;
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <Form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {serverError && (
                 <div className="p-3 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                     {serverError}
@@ -89,7 +85,7 @@ const RegisterForm = () => {
 
             <InputField control={form.control} type='password' name='confirmPassword' required placeholder='Konfirmasi Password' radius='sm' />
 
-            <div className="pt-2" >
+            <div className="pt-2 w-full" >
                 <Button
                     type="submit"
                     disabled={formState.isSubmitting}
@@ -98,7 +94,7 @@ const RegisterForm = () => {
                     {formState.isSubmitting ? 'Mendaftarkan...' : 'Buat Akun'}
                 </Button>
             </div>
-        </form >
+        </Form >
     );
 };
 
