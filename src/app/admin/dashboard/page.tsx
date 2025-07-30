@@ -1,5 +1,4 @@
 import ChartDashboard from '~/components/admin/ChartDashboard';
-import PageContainer from '~/components/layouts/PageContainer';
 import StatCard from '~/components/ui/StatCard'
 import { getMonthlySalesData } from '~/libs/data'
 
@@ -15,7 +14,7 @@ const Dashboard = async () => {
     const salesData = await getMonthlySalesData()
 
     return (
-        <PageContainer>
+        <div className='h-screen'>
             <h1 className="text-3xl font-bold tracking-tight text-white">
                 Dashboard
             </h1>
@@ -46,7 +45,7 @@ const Dashboard = async () => {
                     </ul>
                 </div>
             </div>
-        </PageContainer>
+        </div>
     )
 }
 

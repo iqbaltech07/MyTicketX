@@ -22,17 +22,17 @@ export default function TicketTable() {
     const cellValue = ticket[columnKey as keyof typeof ticket];
 
     switch (columnKey) {
-        case "price":
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(cellValue as number);
-        case "actions":
-            return (
-                <div className="relative flex items-center gap-2">
-                    <Tooltip content="Edit tiket"><Button isIconOnly size="sm" variant="light"><FaEdit className="text-lg text-zinc-400" /></Button></Tooltip>
-                    <Tooltip color="danger" content="Hapus tiket"><Button isIconOnly size="sm" variant="light" color="danger"><FaTrashAlt className="text-lg" /></Button></Tooltip>
-                </div>
-            );
-        default:
-            return cellValue;
+      case "price":
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(cellValue as number);
+      case "actions":
+        return (
+          <div className="relative flex items-center gap-2">
+            <Tooltip content="Edit tiket" classNames={{ content: "!text-black" }}><Button isIconOnly size="sm" variant="light"><FaEdit className="text-lg text-zinc-400" /></Button></Tooltip>
+            <Tooltip color="danger" content="Hapus tiket"><Button isIconOnly size="sm" variant="light" color="danger"><FaTrashAlt className="text-lg" /></Button></Tooltip>
+          </div>
+        );
+      default:
+        return cellValue;
     }
   }, []);
 

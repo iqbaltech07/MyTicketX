@@ -10,11 +10,10 @@ interface PageContainerProps extends React.HTMLAttributes<HTMLElement> {
   withNavbar?: boolean;
   withFooter?: boolean;
   withContainer?: boolean;
-  withSidebar?: boolean;
 }
 
 const PageContainer = forwardRef<HTMLElement, PageContainerProps>(
-  ({ className, children, withNavbar = false, withFooter = false, withSidebar, withContainer }, ref) => {
+  ({ className, children, withNavbar = false, withFooter = false, withContainer }, ref) => {
     return (
       <>
         {withNavbar && <NavigationBar />}

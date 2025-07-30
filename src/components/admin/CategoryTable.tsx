@@ -1,15 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button } from "@heroui/react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import axiosInstance from "~/libs/axiosInstance";
 
-const categories = [
-  { id: 1, name: "Musik", eventCount: 5 },
-  { id: 2, name: "Olahraga", eventCount: 3 },
-  { id: 3, name: "Seminar", eventCount: 8 },
-  { id: 4, name: "Seni & Teater", eventCount: 4 },
-];
+type Category = {
+  id: string;
+  name: string;
+  _count: {
+    events: number;
+  };
+};
+
+type CategoryTableProps = {
+  categories: Category[];
+  onEdit: (category: Category) => void;
+  onDeleteSuccess: () => void;
+};
 
 const columns = [
   { name: "NAMA KATEGORI", uid: "name" },
@@ -17,33 +25,47 @@ const columns = [
   { name: "ACTIONS", uid: "actions" },
 ];
 
-export default function CategoryTable() {
+export default function CategoryTable({ categories, onEdit, onDeleteSuccess }: CategoryTableProps) {
 
-  const renderCell = React.useCallback((category: typeof categories[0], columnKey: React.Key) => {
-    const cellValue = category[columnKey as keyof typeof category];
+  const handleDelete = async (categoryId: string) => {
+    if (confirm("Apakah Anda yakin ingin menghapus kategori ini?")) {
+      try {
+        await axiosInstance.delete(`/admin/categories/${categoryId}`);
+        onDeleteSuccess();
+      } catch (error: any) {
+        console.error("Gagal menghapus kategori:", error);
+        alert(error.response?.data?.message || "Gagal menghapus kategori. Silakan coba lagi.");
+      }
+    }
+  };
 
+  const renderCell = React.useCallback((category: Category, columnKey: React.Key) => {
     switch (columnKey) {
       case "name":
-        return <p className="font-bold">{cellValue}</p>;
+        return <p className="font-bold text-black">{category.name}</p>;
+      case "eventCount":
+        return <p className="text-zinc-900">{category._count.events}</p>;
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Edit kategori">
-              <Button isIconOnly size="sm" variant="light">
+            <Tooltip content="Edit kategori" classNames={{ content: "!text-black" }}>
+              <Button isIconOnly size="sm" variant="light" onPress={() => onEdit(category)}>
                 <FaEdit className="text-lg text-zinc-400" />
               </Button>
             </Tooltip>
             <Tooltip color="danger" content="Hapus kategori">
-               <Button isIconOnly size="sm" variant="light" color="danger">
+              <Button isIconOnly size="sm" variant="light" color="danger" onPress={() => handleDelete(category.id)}>
                 <FaTrashAlt className="text-lg" />
               </Button>
             </Tooltip>
           </div>
         );
       default:
-        return cellValue;
+        return null;
     }
-  }, []);
+  }, [onEdit, onDeleteSuccess]);
+
+  const memoizedCategories = useMemo(() => categories, [categories]);
 
   return (
     <Table aria-label="Tabel Kategori" className="bg-[#202027] border border-zinc-800 rounded-xl">
@@ -54,10 +76,10 @@ export default function CategoryTable() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={categories}>
+      <TableBody items={memoizedCategories} emptyContent={"Belum ada kategori."}>
         {(item) => (
           <TableRow key={item.id}>
-            {(columnKey) => <TableCell className="text-black">{renderCell(item, columnKey)}</TableCell>}
+            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
           </TableRow>
         )}
       </TableBody>

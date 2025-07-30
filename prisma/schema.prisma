@@ -37,7 +37,6 @@ model User {
   password      String?
   role          Role      @default(USER)
   accounts      Account[]
-  events        Event[]
   otps          Otp[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -72,12 +71,11 @@ model Event {
   id          String   @id @default(cuid())
   name        String
   date        DateTime
+  thumb       String?
   location    String?
   description String?  @db.Text
   organizer   String?
   isDraf      Boolean  @default(true)
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
   tickets     Ticket[]

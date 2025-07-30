@@ -28,3 +28,25 @@ export const LoginSchema = z.object({
     message: "Password is required.",
   }),
 });
+
+export const EventSchema = z.object({
+  name: z.string().min(3, { message: "Nama event minimal 3 karakter." }),
+  description: z
+    .string()
+    .min(10, { message: "Deskripsi minimal 10 karakter." }),
+  thumb: z
+    .string()
+    .url({ message: "URL gambar tidak valid." })
+    .min(1, { message: "Gambar banner wajib diisi." }),
+  date: z.string(),
+  organizer: z
+    .string()
+    .min(3, { message: "Nama penyelenggara minimal 3 karakter." }),
+  location: z.string().min(3, { message: "Lokasi minimal 3 karakter." }),
+  categoryId: z.string({ required_error: "Kategori wajib diisi." }),
+  isDraf: z.boolean(),
+});
+
+export const CategorySchema = z.object({
+  name: z.string().min(3, { message: "Nama kategori minimal 3 karakter." }),
+});
