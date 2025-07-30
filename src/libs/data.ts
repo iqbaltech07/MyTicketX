@@ -32,3 +32,17 @@ export async function getDashboardStats() {
     throw new Error("Error fetching dashboard stats");
   }
 }
+
+export async function getMonthlySalesData() {
+  // NOTE: Ketika model Transaction sudah ada, ganti dummy data ini
+  // dengan query Prisma untuk agregasi data penjualan per bulan.
+  return [
+    { name: 'Jan', "Tiket Terjual": 1200 },
+    { name: 'Feb', "Tiket Terjual": 2100 },
+    { name: 'Mar', "Tiket Terjual": 1800 },
+    { name: 'Apr', "Tiket Terjual": 2780 },
+    { name: 'Mei', "Tiket Terjual": 1890 },
+    { name: 'Jun', "Tiket Terjual": 2390 },
+    { name: 'Jul', "Tiket Terjual": 3490 },
+  ];
+}
