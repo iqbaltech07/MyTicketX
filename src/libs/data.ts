@@ -1,41 +1,61 @@
 import { prisma } from "./prisma";
 
-export async function getAllUsers() {
-  try {
-    const users = await prisma.user.findMany();
-    return users;
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    throw new Error("Error fetching users");
-  }
-}
-
 export async function getDashboardStats() {
   try {
     const totalUsers = await prisma.user.count({
       where: { role: "USER" },
     });
-    const totalEvents = await prisma.event.count();
+    
+    const totalEvents = await prisma.event.count({
+      where: { isDraf: false }, 
+    });
+
     const totalTickets = await prisma.ticket.aggregate({
       _sum: {
         quantity: true,
       },
     });
 
+    const totalTicketsSold = 0; 
+
     return {
       totalUsers,
       totalEvents,
-      totalTicketsSold: totalTickets._sum.quantity || 0
+      totalTickets: totalTickets._sum.quantity || 0,
+      totalTicketsSold,
     };
   } catch (error) {
     console.error("Error fetching dashboard stats:", error);
-    throw new Error("Error fetching dashboard stats");
+    return {
+      totalUsers: 0,
+      totalEvents: 0,
+      totalTickets: 0,
+      totalTicketsSold: 0,
+    };
   }
 }
 
+export async function getLatestEvents() {
+    try {
+        const events = await prisma.event.findMany({
+            take: 5, 
+            orderBy: {
+                createdAt: 'desc'
+            },
+            select: {
+                id: true,
+                name: true,
+            }
+        });
+        return events;
+    } catch (error) {
+        console.error("Error fetching latest events:", error);
+        return [];
+    }
+}
+
+
 export async function getMonthlySalesData() {
-  // NOTE: Ketika model Transaction sudah ada, ganti dummy data ini
-  // dengan query Prisma untuk agregasi data penjualan per bulan.
   return [
     { name: 'Jan', "Tiket Terjual": 1200 },
     { name: 'Feb', "Tiket Terjual": 2100 },

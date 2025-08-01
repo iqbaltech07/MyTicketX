@@ -50,3 +50,18 @@ export const EventSchema = z.object({
 export const CategorySchema = z.object({
   name: z.string().min(3, { message: "Nama kategori minimal 3 karakter." }),
 });
+
+export const TicketSchema = z.object({
+  type: z.string().min(3, { message: "Tipe tiket minimal 3 karakter." }),
+  price: z.coerce.number().positive({ message: "Harga harus lebih dari 0." }),
+  quantity: z.coerce
+    .number()
+    .int()
+    .positive({ message: "Kuantitas harus lebih dari 0." }),
+  qrCode: z
+    .string()
+    .url({ message: "URL QR Code tidak valid." })
+    .optional()
+    .or(z.literal("")),
+  eventId: z.string(),
+});
