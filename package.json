@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth/core": "^0.40.0",
     "@auth/prisma-adapter": "^2.10.0",
     "@heroui/react": "^2.8.0-beta.13",
     "@hookform/resolvers": "^5.1.1",
@@ -20,9 +19,10 @@
     "bcrypt": "^6.0.0",
     "formidable": "^3.5.4",
     "framer-motion": "^12.23.0",
+    "midtrans-client": "^1.4.3",
     "next": "15.3.5",
     "next-auth": "^4.24.11",
-    "nodemailer": "^7.0.5",
+    "nodemailer": "^6.9.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",

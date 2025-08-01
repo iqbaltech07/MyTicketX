@@ -12,11 +12,6 @@ declare module "next-auth" {
       role: string;
     } & DefaultSession["user"];
   }
-
-  interface User extends DefaultUser {
-    id: string;
-    role: string;
-  }
 }
 
 declare module "next-auth/jwt" {
@@ -26,24 +21,13 @@ declare module "next-auth/jwt" {
   }
 }
 
-declare module "@auth/core/adapters" {
-  interface AdapterUser {
-    id: string;
-    email: string;
-    emailVerified: Date | null;
-    role: string;
-  }
-}
-
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
-
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -57,6 +41,13 @@ const handler = NextAuth({
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
+          select: {
+            id: true,
+            email: true,
+            password: true,
+            emailVerified: true,
+            role: true,
+          },
         });
 
         if (!user || !user.password) {
@@ -84,25 +75,22 @@ const handler = NextAuth({
       },
     }),
   ],
-
   pages: {
     signIn: "/login",
     error: "/login",
   },
-
   session: {
     strategy: "jwt",
   },
-
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.role = user.role;
+        const u = user as { id: string; role: string };
+        token.id = u.id;
+        token.role = u.role;
       }
       return token;
     },
-
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id;
@@ -111,7 +99,6 @@ const handler = NextAuth({
       return session;
     },
   },
-
   secret: process.env.NEXTAUTH_SECRET,
 });
 
