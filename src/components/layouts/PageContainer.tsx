@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef, ReactNode } from "react";
+import React, { forwardRef, ReactNode, useEffect } from "react";
 import NavigationBar from "../common/NavigationBar";
 import Footer from "../common/Footer";
 
@@ -14,6 +14,20 @@ interface PageContainerProps extends React.HTMLAttributes<HTMLElement> {
 
 const PageContainer = forwardRef<HTMLElement, PageContainerProps>(
   ({ className, children, withNavbar = false, withFooter = false, withContainer }, ref) => {
+
+    useEffect(() => {
+      const script = document.createElement("script");
+      script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
+      script.setAttribute("data-client-key", process.env.NEXT_PUBLIC_MIDTRANS_CLIENT || "");
+      script.async = true;
+
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    },)
+
     return (
       <>
         {withNavbar && <NavigationBar />}

@@ -16,7 +16,11 @@ export async function getDashboardStats() {
       },
     });
 
-    const totalTicketsSold = 0;
+    const soldTicketsResult = await prisma.orderItem.aggregate({
+      where: { transaction: { status: "COMPLETED" } },
+      _sum: { quantity: true },
+    });
+    const totalTicketsSold = soldTicketsResult._sum.quantity || 0;
 
     return {
       totalUsers,
@@ -55,15 +59,59 @@ export async function getLatestEvents() {
 }
 
 export async function getMonthlySalesData() {
-  return [
-    { name: "Jan", "Tiket Terjual": 1200 },
-    { name: "Feb", "Tiket Terjual": 2100 },
-    { name: "Mar", "Tiket Terjual": 1800 },
-    { name: "Apr", "Tiket Terjual": 2780 },
-    { name: "Mei", "Tiket Terjual": 1890 },
-    { name: "Jun", "Tiket Terjual": 2390 },
-    { name: "Jul", "Tiket Terjual": 3490 },
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mei",
+    "Jun",
+    "Jul",
+    "Ags",
+    "Sep",
+    "Okt",
+    "Nov",
+    "Des",
   ];
+  try {
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        status: "COMPLETED",
+      },
+      include: {
+        orderItems: {
+          select: {
+            quantity: true,
+          },
+        },
+      },
+    });
+
+    const salesByMonth: { [key: string]: number } = {};
+
+    transactions.forEach((trx) => {
+      const monthIndex = trx.createdAt.getMonth();
+      const monthName = monthNames[monthIndex];
+      const totalQuantityInTrx = trx.orderItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+
+      if (salesByMonth[monthName]) {
+        salesByMonth[monthName] += totalQuantityInTrx;
+      } else {
+        salesByMonth[monthName] = totalQuantityInTrx;
+      }
+    });
+
+    return monthNames.map((month) => ({
+      name: month,
+      "Tiket Terjual": salesByMonth[month] || 0,
+    }));
+  } catch (error) {
+    console.error("Error fetching monthly sales data:", error);
+    return monthNames.map((month) => ({ name: month, "Tiket Terjual": 0 }));
+  }
 }
 
 export async function getPublicLatestEvents() {
@@ -161,5 +209,64 @@ export async function getEventById(slug: string) {
   } catch (error) {
     console.error("Error fetching event by ID:", error);
     return null;
+  }
+}
+
+export async function getActiveTicketsByUserId(userId: string) {
+  try {
+    const completedOrderItems = await prisma.orderItem.findMany({
+      where: {
+        transaction: {
+          userId: userId,
+          status: 'COMPLETED',
+        },
+      },
+      include: {
+        ticket: {
+          include: {
+            event: true, 
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return completedOrderItems;
+  } catch (error) {
+    console.error("Error fetching active tickets:", error);
+    return [];
+  }
+}
+
+export async function getPurchaseHistoryByUserId(userId: string) {
+  try {
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        orderItems: {
+          take: 1,
+          include: {
+            ticket: {
+              include: {
+                event: {
+                  select: { name: true }
+                }
+              }
+            }
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    
+    return transactions;
+  } catch (error) {
+    console.error("Error fetching purchase history:", error);
+    return [];
   }
 }

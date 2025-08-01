@@ -15,7 +15,7 @@ export function mainMiddleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-const publicPages = ["/", "/login", "/register", "/verify", "/admin/login"];
+const publicPages = ["/", "/login", "/register", "/verify", "/admin/login", "/payment/finish"];
 
 export default withAuth(mainMiddleware, publicPages);
 

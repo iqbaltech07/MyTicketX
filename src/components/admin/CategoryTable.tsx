@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button } from "@heroui/react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import axiosInstance from "~/libs/axiosInstance";
@@ -27,16 +27,22 @@ const columns = [
 
 export default function CategoryTable({ categories, onEdit, onDeleteSuccess }: CategoryTableProps) {
 
-  const handleDelete = async (categoryId: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus kategori ini?")) {
-      try {
-        await axiosInstance.delete(`/categories/${categoryId}`);
-        onDeleteSuccess();
-      } catch (error: any) {
-        alert(error.response?.data?.message || "Gagal menghapus kategori. Silakan coba lagi.");
+  const handleDelete = useCallback(
+    async (categoryId: string) => {
+      if (confirm("Apakah Anda yakin ingin menghapus kategori ini?")) {
+        try {
+          await axiosInstance.delete(`/categories/${categoryId}`);
+          onDeleteSuccess();
+        } catch (error: any) {
+          alert(
+            error.response?.data?.message ||
+            "Gagal menghapus kategori. Silakan coba lagi."
+          );
+        }
       }
-    }
-  };
+    },
+    [onDeleteSuccess]
+  );
 
   const renderCell = React.useCallback((category: Category, columnKey: React.Key) => {
     switch (columnKey) {

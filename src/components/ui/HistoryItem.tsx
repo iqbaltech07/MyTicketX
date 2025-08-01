@@ -1,9 +1,27 @@
 import React from 'react'
 
-const HistoryItem = ({ event, purchaseDate, totalAmount, status }: { event: any, purchaseDate: string, totalAmount: number, status: string }) => {
+type HistoryItemProps = {
+    event: { name: string };
+    purchaseDate: string;
+    totalAmount: number;
+    status: string; 
+}
+
+const HistoryItem = ({ event, purchaseDate, totalAmount, status }: HistoryItemProps) => {
     const formattedDate = new Date(purchaseDate).toLocaleDateString("id-ID", {
         day: "numeric", month: "long", year: "numeric"
     });
+
+    const getStatusStyle = () => {
+        switch (status.toLowerCase()) {
+            case 'completed': return 'text-green-400';
+            case 'pending': return 'text-yellow-400';
+            case 'failed': return 'text-red-400';
+            case 'cancelled': return 'text-zinc-500';
+            default: return 'text-zinc-400';
+        }
+    };
+
     return (
         <div className="bg-[#202027] border border-zinc-800 rounded-lg p-4 flex justify-between items-center">
             <div>
@@ -14,7 +32,7 @@ const HistoryItem = ({ event, purchaseDate, totalAmount, status }: { event: any,
                 <p className="text-lg font-semibold text-white">
                     {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalAmount)}
                 </p>
-                <p className={`text-sm text-right font-bold ${status === 'Completed' ? 'text-green-400' : 'text-yellow-400'}`}>
+                <p className={`text-sm text-right font-bold ${getStatusStyle()}`}>
                     {status}
                 </p>
             </div>
@@ -22,4 +40,4 @@ const HistoryItem = ({ event, purchaseDate, totalAmount, status }: { event: any,
     )
 }
 
-export default HistoryItem
+export default HistoryItem;

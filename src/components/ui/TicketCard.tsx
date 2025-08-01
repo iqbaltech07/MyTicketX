@@ -18,7 +18,7 @@ const TicketCard = ({ event, ticketType }: { event: any, ticketType: string }) =
                         <p className="flex items-center gap-2"><FaMapPin /> {event.location}</p>
                     </div>
                 </div>
-                <Button className="mt-4 w-full md:w-auto md:self-end bg-zinc-700 hover:bg-zinc-600">
+                <Button className="mt-4 w-full md:w-auto md:self-end bg-white hover:bg-white">
                     <FaQrcode className="mr-2" />
                     Lihat QR Code
                 </Button>

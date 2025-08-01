@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Table,
   TableHeader,
@@ -38,19 +38,22 @@ const columns = [
 ];
 
 export default function TicketTable({ tickets, onEdit, onDeleteSuccess }: TicketTableProps) {
-  const handleDelete = async (ticketId: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus tipe tiket ini?")) {
-      try {
-        await axiosInstance.delete(`/tickets/${ticketId}`);
-        onDeleteSuccess();
-      } catch (error: any) {
-        alert(
-          error.response?.data?.message ||
+  const handleDelete = useCallback(
+    async (ticketId: string) => {
+      if (confirm("Apakah Anda yakin ingin menghapus tipe tiket ini?")) {
+        try {
+          await axiosInstance.delete(`/tickets/${ticketId}`);
+          onDeleteSuccess();
+        } catch (error: any) {
+          alert(
+            error.response?.data?.message ||
             "Gagal menghapus tiket. Silakan coba lagi."
-        );
+          );
+        }
       }
-    }
-  };
+    },
+    [onDeleteSuccess]
+  );
 
   const renderCell = React.useCallback(
     (ticket: Ticket, columnKey: React.Key) => {
@@ -64,13 +67,13 @@ export default function TicketTable({ tickets, onEdit, onDeleteSuccess }: Ticket
             minimumFractionDigits: 0,
           }).format(cellValue as number);
         case "qrCode":
-            return cellValue ? (
-                <Link href={cellValue as string} target="_blank" size="sm" className="text-blue-500 hover:underline">
-                    Lihat QR
-                </Link>
-            ) : (
-                <span className="text-zinc-500 italic">Kosong</span>
-            );
+          return cellValue ? (
+            <Link href={cellValue as string} target="_blank" size="sm" className="text-blue-500 hover:underline">
+              Lihat QR
+            </Link>
+          ) : (
+            <span className="text-zinc-500 italic">Kosong</span>
+          );
         case "actions":
           return (
             <div className="relative flex items-center gap-2">

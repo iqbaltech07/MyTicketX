@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button } from "@heroui/react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Link from "next/link";
@@ -41,17 +41,20 @@ const columns = [
 
 export default function EventTable({ events, onDeleteSuccess }: EventTableProps) {
 
-    const handleDelete = async (eventId: string) => {
-        if (confirm("Apakah Anda yakin ingin menghapus event ini?")) {
-            try {
-                await axiosInstance.delete(`/events/${eventId}`);
-                onDeleteSuccess();
-            } catch (error) {
-                console.error("Gagal menghapus event:", error);
-                alert("Gagal menghapus event. Silakan coba lagi.");
+    const handleDelete = useCallback(
+        async (eventId: string) => {
+            if (confirm("Apakah Anda yakin ingin menghapus event ini?")) {
+                try {
+                    await axiosInstance.delete(`/events/${eventId}`);
+                    onDeleteSuccess();
+                } catch (error) {
+                    console.error("Gagal menghapus event:", error);
+                    alert("Gagal menghapus event. Silakan coba lagi.");
+                }
             }
-        }
-    };
+        },
+        [onDeleteSuccess]
+    );
 
     const renderCell = React.useCallback((event: Event, columnKey: React.Key) => {
         switch (columnKey) {
@@ -72,7 +75,7 @@ export default function EventTable({ events, onDeleteSuccess }: EventTableProps)
                 const minutes = date.getMinutes().toString().padStart(2, '0');
 
                 return `${hours}:${minutes}`;
-                case "draf": return <p className={`${event.isDraf ? "text-yellow-600" : "text-green-600"} font-bold`}>{event.isDraf ? 'Ya' : 'Tidak'}</p>;
+            case "draf": return <p className={`${event.isDraf ? "text-yellow-600" : "text-green-600"} font-bold`}>{event.isDraf ? 'Ya' : 'Tidak'}</p>;
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">

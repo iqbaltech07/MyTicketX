@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardBody, Tab, Tabs } from '@heroui/react'
 import React from 'react'
 import { FaHistory, FaTicketAlt } from 'react-icons/fa'
