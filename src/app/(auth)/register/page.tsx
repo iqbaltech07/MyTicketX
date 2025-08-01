@@ -23,7 +23,6 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Form Registrasi */}
         <div className="flex items-center justify-center p-8 sm:p-12">
           <div className="w-full max-w-md">
             <div className="mb-8 text-center lg:text-left">

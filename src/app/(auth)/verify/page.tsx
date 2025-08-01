@@ -1,11 +1,9 @@
-// src/app/(auth)/verify/page.tsx
-// File Baru
-
 "use client";
 
 import { Button, Form, InputOtp } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import PageContainer from '~/components/layouts/PageContainer';
 import axiosInstance from '~/libs/axiosInstance';
 
 const VerifyPage = () => {
@@ -14,6 +12,9 @@ const VerifyPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isResending, setIsResending] = useState(false);
+    const [resendCooldown, setResendCooldown] = useState(0);
+    const [resendStatus, setResendStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -29,6 +30,13 @@ const VerifyPage = () => {
         }
     }, []);
 
+    useEffect(() => {
+        if (resendCooldown > 0) {
+            const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [resendCooldown]);
+
     const handleSubmit = async (otpValue: string) => {
         if (otpValue.length !== 6) {
             setError("OTP harus terdiri dari 6 digit.");
@@ -37,6 +45,7 @@ const VerifyPage = () => {
         setIsLoading(true);
         setError(null);
         setSuccess(null);
+        setResendStatus(null);
 
         try {
             await axiosInstance.post('/auth/verify-otp', {
@@ -54,8 +63,29 @@ const VerifyPage = () => {
         }
     };
 
+    const handleResendOtp = async () => {
+        if (!email) {
+            setResendStatus({ type: 'error', message: 'Email tidak ditemukan untuk mengirim ulang OTP.' });
+            return;
+        }
+        setIsResending(true);
+        setResendStatus(null);
+        setError(null);
+
+        try {
+            await axiosInstance.post('/auth/send-otp', { email });
+            setResendStatus({ type: 'success', message: 'Kode OTP baru telah berhasil dikirim.' });
+            setResendCooldown(60);
+        } catch (err: any) {
+            const message = err?.response?.data?.message || 'Gagal mengirim ulang OTP.';
+            setResendStatus({ type: 'error', message });
+        } finally {
+            setIsResending(false);
+        }
+    };
+
     return (
-        <div className="flex h-dvh items-center justify-center bg-[#1A1A1F] p-4">
+        <PageContainer className="flex h-dvh items-center justify-center bg-[#1A1A1F] p-4">
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -87,15 +117,41 @@ const VerifyPage = () => {
                             classNames={{ caret: 'bg-black' }}
                             placeholder="-"
                         />
-                        <Button size="md" type="submit" variant="bordered" disabled={isLoading || otp.length < 6}>
-                            {isLoading ? 'Memverifikasi...' : 'Submit'}
+                        
+                        <div className="text-center text-sm text-zinc-400 h-5">
+                            {resendCooldown > 0 ? (
+                                <p>Kirim ulang kode dalam {resendCooldown} detik</p>
+                            ) : (
+                                <p>
+                                    Tidak menerima kode?{' '}
+                                    <button
+                                        type="button"
+                                        onClick={handleResendOtp}
+                                        disabled={isResending}
+                                        className="font-semibold cursor-pointer text-sky-400 hover:text-sky-300 disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
+                                    >
+                                        {isResending ? 'Mengirim...' : 'Kirim ulang'}
+                                    </button>
+                                </p>
+                            )}
+                        </div>
+
+                        {resendStatus && (
+                            <div className={`text-sm text-center ${resendStatus.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                                {resendStatus.message}
+                            </div>
+                        )}
+                        
+                        <Button size="md" type="submit" variant="bordered" disabled={isLoading || otp.length < 6} className="w-full mt-2">
+                            {isLoading ? 'Memverifikasi...' : 'Verifikasi'}
                         </Button>
-                        {error && <div className="mt-2 text-sm text-red-400">{error}</div>}
-                        {success && <div className="mt-2 text-sm text-green-400">{success}</div>}
+                        
+                        {error && <div className="mt-2 text-sm text-red-400 text-center">{error}</div>}
+                        {success && <div className="mt-2 text-sm text-green-400 text-center">{success}</div>}
                     </Form>
                 </div>
             </div>
-        </div>
+        </PageContainer>
     );
 };
 

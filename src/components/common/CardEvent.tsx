@@ -29,8 +29,8 @@ const CardEvent = ({ title, description, image, date, time }: CardEventType) => 
                 </CardHeader>
 
                 <CardBody className="p-3 space-y-1">
-                    <h2 className="text-base font-semibold text-gray-900">{title}</h2>
-                    <p className="text-gray-600 text-xs">
+                    <h2 className="text-base font-semibold text-gray-900 truncate">{title}</h2>
+                    <p className="text-gray-600 text-xs line-clamp-2">
                         {description}
                     </p>
                 </CardBody>

@@ -18,10 +18,12 @@ import {
 } from "@heroui/react";
 import { menuItems } from "~/constant/const";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const NavigationBar = () => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const { data: session } = useSession();
+    const router = useRouter();
 
     return (
         <Navbar onMenuOpenChange={setIsMenuOpen} className="px-5 py-2 lg:px-20 bg-[#1A1A1F]">
@@ -75,7 +77,8 @@ const NavigationBar = () => {
                                 <p className="font-semibold text-xs text-gray-500">Signed in as</p>
                                 <p className="font-semibold text-xs text-gray-500">{session?.user?.email}</p>
                             </DropdownItem>
-                            <DropdownItem key="settings">My Profile</DropdownItem>
+
+                            <DropdownItem key="settings" onClick={() => router.replace("/profile")}>My Profile</DropdownItem>
                             <DropdownItem key="logout" color="danger" onClick={() => signOut()}>
                                 Log Out
                             </DropdownItem>

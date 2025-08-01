@@ -27,77 +27,77 @@ const banners: IBanners[] = [
   },
 ];
 
-const events: IEvents[] = [
-  {
-    id: 1,
-    title: "Golden Match Football",
-    slug: "golden-match-football-1",
-    description:
-      "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
-    date: "2028-03-01", 
-    time: "10:00:00", 
-    thumb: "/images/golden-match.jpg",
-  },
-  {
-    id: 2,
-    title: "Golden Match Football",
-    slug: "golden-match-football-2",
-    description:
-      "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
-    date: "2028-03-01",
-    time: "10:00:00",
-    thumb: "/images/golden-match.jpg",
-  },
-  {
-    id: 3,
-    title: "Golden Match Football",
-    slug: "golden-match-football-3",
-    description:
-      "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
-    date: "2028-03-01",
-    time: "10:00:00",
-    thumb: "/images/golden-match.jpg",
-  },
-  {
-    id: 4,
-    title: "Golden Match Football",
-    slug: "golden-match-football-4",
-    description:
-      "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
-    date: "2028-03-01",
-    time: "10:00:00",
-    thumb: "/images/golden-match.jpg",
-  },
-  {
-    id: 5,
-    title: "Golden Match Football",
-    slug: "golden-match-football-5",
-    description:
-      "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
-    date: "2028-03-01",
-    time: "10:00:00",
-    thumb: "/images/golden-match.jpg",
-  },
-  {
-    id: 6,
-    title: "Golden Match Football",
-    slug: "golden-match-football-6",
-    description:
-      "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
-    date: "2028-03-01",
-    time: "10:00:00",
-    thumb: "/images/golden-match.jpg",
-  },
-  {
-    id: 7,
-    title: "Golden Match Football",
-    slug: "golden-match-football-7",
-    description:
-      "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
-    date: "2028-03-01",
-    time: "10:00:00",
-    thumb: "/images/golden-match.jpg",
-  },
-];
+// const events: IEvents[] = [
+//   {
+//     id: 1,
+//     title: "Golden Match Football",
+//     slug: "golden-match-football-1",
+//     description:
+//       "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
+//     date: "2028-03-01", 
+//     time: "10:00:00", 
+//     thumb: "/images/golden-match.jpg",
+//   },
+//   {
+//     id: 2,
+//     title: "Golden Match Football",
+//     slug: "golden-match-football-2",
+//     description:
+//       "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
+//     date: "2028-03-01",
+//     time: "10:00:00",
+//     thumb: "/images/golden-match.jpg",
+//   },
+//   {
+//     id: 3,
+//     title: "Golden Match Football",
+//     slug: "golden-match-football-3",
+//     description:
+//       "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
+//     date: "2028-03-01",
+//     time: "10:00:00",
+//     thumb: "/images/golden-match.jpg",
+//   },
+//   {
+//     id: 4,
+//     title: "Golden Match Football",
+//     slug: "golden-match-football-4",
+//     description:
+//       "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
+//     date: "2028-03-01",
+//     time: "10:00:00",
+//     thumb: "/images/golden-match.jpg",
+//   },
+//   {
+//     id: 5,
+//     title: "Golden Match Football",
+//     slug: "golden-match-football-5",
+//     description:
+//       "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
+//     date: "2028-03-01",
+//     time: "10:00:00",
+//     thumb: "/images/golden-match.jpg",
+//   },
+//   {
+//     id: 6,
+//     title: "Golden Match Football",
+//     slug: "golden-match-football-6",
+//     description:
+//       "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
+//     date: "2028-03-01",
+//     time: "10:00:00",
+//     thumb: "/images/golden-match.jpg",
+//   },
+//   {
+//     id: 7,
+//     title: "Golden Match Football",
+//     slug: "golden-match-football-7",
+//     description:
+//       "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
+//     date: "2028-03-01",
+//     time: "10:00:00",
+//     thumb: "/images/golden-match.jpg",
+//   },
+// ];
 
-export { banners, events };
+export { banners };
