@@ -9,7 +9,7 @@ const LatestSection = async () => {
     const formattedEvents: IEvents[] = eventsData.map(event => ({
         id: event.id, 
         title: event.name,
-        slug: event.id,
+        slug: event.slug,
         description: event.description || '',
         thumb: event.thumb || '/images/golden-match.jpg', 
         date: event.date.toISOString(),

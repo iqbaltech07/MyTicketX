@@ -20,6 +20,7 @@ export async function searchEventsByName(query: string) {
       select: {
         id: true,
         name: true,
+        slug: true,
         thumb: true,
       },
     });

@@ -10,6 +10,7 @@ import { debounce } from '~/libs/debounce';
 type EventPreview = {
     id: string;
     name: string;
+    slug: string;
     thumb: string | null;
 };
 

@@ -8,14 +8,27 @@ export async function POST(request: Request) {
     const validation = EventSchema.safeParse(body);
 
     if (!validation.success) {
-      return NextResponse.json({ message: validation.error.format() }, { status: 400 });
+      return NextResponse.json(
+        { message: validation.error.format() },
+        { status: 400 }
+      );
     }
 
-    const { name, description, thumb, date, location, organizer, categoryId,isDraf } = validation.data;
+    const {
+      name,
+      description,
+      thumb,
+      date,
+      location,
+      organizer,
+      categoryId,
+      isDraf,
+    } = validation.data;
 
     const newEvent = await prisma.event.create({
       data: {
         name,
+        slug: name.toLowerCase().replace(/[\s/]+/g, "-"),
         description,
         thumb,
         date: new Date(date),
@@ -29,7 +42,10 @@ export async function POST(request: Request) {
     return NextResponse.json(newEvent, { status: 201 });
   } catch (error) {
     console.error("EVENT_POST_ERROR:", error);
-    return new NextResponse(JSON.stringify({ message: "Terjadi kesalahan internal pada server" }), { status: 500 });
+    return new NextResponse(
+      JSON.stringify({ message: "Terjadi kesalahan internal pada server" }),
+      { status: 500 }
+    );
   }
 }
 
@@ -43,12 +59,15 @@ export async function GET() {
         },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
     return NextResponse.json(events);
   } catch (error) {
     console.error("EVENT_GET_ERROR:", error);
-    return new NextResponse(JSON.stringify({ message: "Gagal mengambil data event" }), { status: 500 });
+    return new NextResponse(
+      JSON.stringify({ message: "Gagal mengambil data event" }),
+      { status: 500 }
+    );
   }
 }

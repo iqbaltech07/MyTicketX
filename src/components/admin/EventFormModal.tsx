@@ -13,7 +13,8 @@ import {
     Select,
     SelectItem,
     DateInput,
-    Image
+    Image,
+    Switch
 } from "@heroui/react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -181,6 +182,15 @@ export default function EventFormModal({
                                 control={control}
                                 render={({ field }) => (
                                     <Input {...field} label="Lokasi" placeholder="Masukkan lokasi event" variant="bordered" errorMessage={errors.location?.message} isInvalid={!!errors.location} />
+                                )}
+                            />
+                            <Controller
+                                name="isDraf"
+                                control={control}
+                                render={({ field: { value, onChange, ...rest } }) => (
+                                    <Switch isSelected={value} onChange={onChange} {...rest}>
+                                        Simpan sebagai Draft
+                                    </Switch>
                                 )}
                             />
                         </ModalBody>

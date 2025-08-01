@@ -79,7 +79,7 @@ model Event {
   location    String?
   description String?  @db.Text
   organizer   String?
-  isDraf      Boolean  @default(true)
+  isDraf     Boolean  @default(true)
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
   tickets     Ticket[]

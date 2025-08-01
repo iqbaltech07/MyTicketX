@@ -5,6 +5,7 @@ import React from 'react';
 type EventPreview = {
     id: string;
     name: string;
+    slug: string;
     thumb: string | null;
 };
 
@@ -22,7 +23,7 @@ const SearchPreview = ({ results, isLoading }: SearchPreviewProps) => {
                 ) : results.length > 0 ? (
                     results.map((event) => (
                         <li key={event.id}>
-                            <Link href={`/event/${event.id}`} className="flex items-center gap-4 p-3 hover:bg-zinc-800 transition-colors">
+                            <Link href={`/event/${event.slug}`} className="flex items-center gap-4 p-3 hover:bg-zinc-800 transition-colors">
                                 <Image
                                     src={event.thumb || '/images/golden-match.jpg'}
                                     alt={event.name}
