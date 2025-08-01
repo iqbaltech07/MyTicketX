@@ -1,15 +1,26 @@
-"use client"
-
 import React from 'react'
 import EventSwiper from '../ui/EventSwiper'
-import { events } from '~/data/data'
+import { getPublicLatestEvents } from '~/libs/data'
+import { IEvents } from '~/types/types';
 
-const LatestSection = () => {
+const LatestSection = async () => {
+    const eventsData = await getPublicLatestEvents();
+
+    const formattedEvents: IEvents[] = eventsData.map(event => ({
+        id: event.id, 
+        title: event.name,
+        slug: event.id,
+        description: event.description || '',
+        thumb: event.thumb || '/images/golden-match.jpg', 
+        date: event.date.toISOString(),
+        time: event.date.toLocaleTimeString('id-ID'),
+    }));
+
     return (
         <div>
             <h2 className='text-[35px] font-bold'>Latest Event</h2>
             <div className='mt-5'>
-               <EventSwiper data={events}/>
+                <EventSwiper data={formattedEvents} />
             </div>
         </div>
     )

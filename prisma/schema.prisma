@@ -13,9 +13,11 @@ enum Role {
   USER
 }
 
-enum EventType {
-  ONLINE
-  OFFLINE
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
 }
 
 model Otp {
@@ -40,6 +42,8 @@ model User {
   otps          Otp[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  transactions Transaction[]
 }
 
 model Account {
@@ -55,8 +59,7 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -70,6 +73,7 @@ model Category {
 model Event {
   id          String   @id @default(cuid())
   name        String
+  slug        String   @unique
   date        DateTime
   thumb       String?
   location    String?
@@ -91,6 +95,35 @@ model Ticket {
   qrCode    String?
   eventId   String
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderItems OrderItem[]
+}
+
+model Transaction {
+  id                  String            @id @default(cuid())
+  userId              String
+  user                User              @relation(fields: [userId], references: [id])
+  totalAmount         Decimal
+  status              TransactionStatus @default(PENDING)
+  paymentGatewayToken String?           @unique
+
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id              String      @id @default(cuid())
+  transactionId   String
+  transaction     Transaction @relation(fields: [transactionId], references: [id])
+  ticketId        String
+  ticket          Ticket      @relation(fields: [ticketId], references: [id])
+  quantity        Int
+  priceAtPurchase Decimal
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

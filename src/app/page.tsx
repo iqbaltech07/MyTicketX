@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import PageContainer from "../components/layouts/PageContainer";
 import SectionContainer from "~/components/layouts/SectionContainer";
 import { Metadata } from "next";
@@ -6,6 +7,7 @@ import UpcomingSection from "~/components/section/UpcomingSection";
 import SearchSection from "~/components/section/SearchSection";
 import CategorySection from "~/components/section/CategorySection";
 import BannerSwiper from "~/components/ui/BannerSwiper";
+import { SkeletonCategory, SkeletonSwiper } from "~/components/ui/Skeletons";
 
 export const metadata: Metadata = {
   title: "MyTicketX - Home",
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
   keywords: ["tickets", "events", "buy tickets", "sell tickets"],
 };
 
-const Home = async () => {
+const Home = () => {
   return (
     <PageContainer withNavbar withFooter className="bg-[#1A1A1F]">
       <div className="relative h-[450px] flex items-center justify-center overflow-hidden">
@@ -21,21 +23,25 @@ const Home = async () => {
         <div className="absolute inset-0 z-0">
           <BannerSwiper />
         </div>
-        <SectionContainer className="relative z-20">
-            <SearchSection />
-        </SectionContainer>
+        <SearchSection />
       </div>
 
       <SectionContainer className="mt-16">
-        <CategorySection />
+        <Suspense fallback={<SkeletonCategory />}>
+          <CategorySection />
+        </Suspense>
       </SectionContainer>
 
       <SectionContainer className="mt-16">
-        <LatestSection />
+        <Suspense fallback={<SkeletonSwiper />}>
+          <LatestSection />
+        </Suspense>
       </SectionContainer>
-      
+
       <SectionContainer className="mt-16">
-        <UpcomingSection />
+        <Suspense fallback={<SkeletonSwiper />}>
+          <UpcomingSection />
+        </Suspense>
       </SectionContainer>
     </PageContainer>
   );

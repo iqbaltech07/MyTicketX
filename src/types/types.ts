@@ -5,7 +5,7 @@ export interface IBanners {
 }
 
 export interface IEvents {
-  id: number;
+  id: string; 
   title: string;
   slug: string;
   description: string;
@@ -13,4 +13,3 @@ export interface IEvents {
   date: string;
   time: string;
 }
-

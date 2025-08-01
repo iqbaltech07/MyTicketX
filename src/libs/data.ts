@@ -66,3 +66,101 @@ export async function getMonthlySalesData() {
     { name: 'Jul', "Tiket Terjual": 3490 },
   ];
 }
+
+export async function getPublicLatestEvents() {
+  try {
+    const events = await prisma.event.findMany({
+      where: { isDraf: false },
+      take: 10,
+      orderBy: {
+        createdAt: 'desc'
+      },
+      include: {
+        category: true, 
+      }
+    });
+    return events;
+  } catch (error) {
+    console.error("Error fetching public latest events:", error);
+    return [];
+  }
+}
+
+export async function getPublicUpcomingEvents() {
+  try {
+    const events = await prisma.event.findMany({
+      where: {
+        isDraf: false,
+        date: {
+          gte: new Date(), 
+        },
+      },
+      take: 10,
+      orderBy: {
+        date: 'asc' 
+      },
+      include: {
+        category: true,
+      }
+    });
+    return events;
+  } catch (error) {
+    console.error("Error fetching public upcoming events:", error);
+    return [];
+  }
+}
+
+export async function getPublicCategories() {
+    try {
+        const categories = await prisma.category.findMany({
+            orderBy: {
+                name: 'asc'
+            }
+        });
+        return categories;
+    } catch (error) {
+        console.error("Error fetching public categories:", error);
+        return [];
+    }
+}
+
+export async function getPublicAllEvents() {
+  try {
+    const events = await prisma.event.findMany({
+      where: { isDraf: false },
+      orderBy: {
+        date: 'desc' 
+      },
+      include: {
+        category: true,
+      }
+    });
+    return events;
+  } catch (error) {
+    console.error("Error fetching all public events:", error);
+    return [];
+  }
+}
+
+export async function getEventById(id: string) {
+    try {
+        const event = await prisma.event.findUnique({
+            where: {
+                id: id,
+                isDraf: false, 
+            },
+            include: {
+                tickets: {
+                    orderBy: {
+                        price: 'asc'
+                    }
+                },
+                category: true,
+            }
+        });
+        return event;
+    } catch (error) {
+        console.error("Error fetching event by ID:", error);
+        return null;
+    }
+}
