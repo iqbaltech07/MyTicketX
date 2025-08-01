@@ -30,10 +30,9 @@ export default function CategoryTable({ categories, onEdit, onDeleteSuccess }: C
   const handleDelete = async (categoryId: string) => {
     if (confirm("Apakah Anda yakin ingin menghapus kategori ini?")) {
       try {
-        await axiosInstance.delete(`/admin/categories/${categoryId}`);
+        await axiosInstance.delete(`/categories/${categoryId}`);
         onDeleteSuccess();
       } catch (error: any) {
-        console.error("Gagal menghapus kategori:", error);
         alert(error.response?.data?.message || "Gagal menghapus kategori. Silakan coba lagi.");
       }
     }

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const LoginAdmin = () => {
     return (
-        <PageContainer className="flex h-dvh items-center justify-center bg-[#09090b] p-4">
+        <div className="flex h-dvh items-center justify-center bg-[#09090b] p-4">
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -28,7 +28,7 @@ const LoginAdmin = () => {
                 </div>
 
             </div>
-        </PageContainer>
+        </div>
     )
 }
 

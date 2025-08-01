@@ -69,7 +69,6 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 });
   } catch (error: any) {
-    console.error("CATEGORY_DELETE_ERROR:", error);
     if (error.code === "P2003") {
       return new NextResponse(
         JSON.stringify({

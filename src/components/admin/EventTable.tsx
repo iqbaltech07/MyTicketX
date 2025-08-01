@@ -19,6 +19,7 @@ type Event = {
     organizer: string | null;
     category: Category;
     date: string;
+    isDraf: boolean;
     _count: { tickets: number };
 };
 
@@ -34,6 +35,7 @@ const columns = [
     { name: "KATEGORI", uid: "category" },
     { name: "TANGGAL", uid: "date" },
     { name: "WAKTU", uid: "time" },
+    { name: "DRAF", uid: "draf" },
     { name: "ACTIONS", uid: "actions" },
 ];
 
@@ -70,6 +72,7 @@ export default function EventTable({ events, onDeleteSuccess }: EventTableProps)
                 const minutes = date.getMinutes().toString().padStart(2, '0');
 
                 return `${hours}:${minutes}`;
+                case "draf": return <p className={`${event.isDraf ? "text-yellow-600" : "text-green-600"} font-bold`}>{event.isDraf ? 'Ya' : 'Tidak'}</p>;
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">

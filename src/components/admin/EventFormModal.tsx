@@ -139,45 +139,43 @@ export default function EventFormModal({
                                     <Textarea {...field} label="Deskripsi" placeholder="Masukkan deskripsi event" variant="bordered" errorMessage={errors.description?.message} isInvalid={!!errors.description} />
                                 )}
                             />
-                            <div className="grid grid-cols-2 gap-8">
-                                <Controller
-                                    name="date"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <DateInput
-                                            {...field}
-                                            label="Tanggal & Waktu Event"
-                                            variant="bordered"
-                                            value={field.value ? parseAbsoluteToLocal(field.value) : null}
-                                            onChange={(date) => {
-                                                if (date) {
-                                                    const zoned = toZoned(date, getLocalTimeZone());
-                                                    field.onChange(zoned.toAbsoluteString());
-                                                } else {
-                                                    field.onChange("");
-                                                }
-                                            }}
-                                            minValue={now(getLocalTimeZone())}
-                                            granularity="minute"
-                                            errorMessage={errors.date?.message}
-                                            isInvalid={!!errors.date}
-                                        />
-                                    )}
-                                />
-                                <Controller
-                                    name="categoryId"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select {...field} label="Kategori" placeholder="Pilih kategori" variant="bordered" errorMessage={errors.categoryId?.message} isInvalid={!!errors.categoryId} classNames={{ value: "!text-white" }}>
-                                            {categories.map((cat) => (
-                                                <SelectItem key={cat.id} textValue={cat.name} className="text-black">
-                                                    {cat.name}
-                                                </SelectItem>
-                                            ))}
-                                        </Select>
-                                    )}
-                                />
-                            </div>
+                            <Controller
+                                name="date"
+                                control={control}
+                                render={({ field }) => (
+                                    <DateInput
+                                        {...field}
+                                        label="Tanggal & Waktu Event"
+                                        variant="bordered"
+                                        value={field.value ? parseAbsoluteToLocal(field.value) : null}
+                                        onChange={(date) => {
+                                            if (date) {
+                                                const zoned = toZoned(date, getLocalTimeZone());
+                                                field.onChange(zoned.toAbsoluteString());
+                                            } else {
+                                                field.onChange("");
+                                            }
+                                        }}
+                                        minValue={now(getLocalTimeZone())}
+                                        granularity="minute"
+                                        errorMessage={errors.date?.message}
+                                        isInvalid={!!errors.date}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="categoryId"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select {...field} label="Kategori" placeholder="Pilih kategori" variant="bordered" errorMessage={errors.categoryId?.message} isInvalid={!!errors.categoryId} classNames={{ value: "!text-white" }}>
+                                        {categories.map((cat) => (
+                                            <SelectItem key={cat.id} textValue={cat.name} className="text-black">
+                                                {cat.name}
+                                            </SelectItem>
+                                        ))}
+                                    </Select>
+                                )}
+                            />
                             <Controller
                                 name="location"
                                 control={control}

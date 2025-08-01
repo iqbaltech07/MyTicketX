@@ -19,6 +19,7 @@ type Event = {
     organizer: string | null; 
     category: Category;
     date: string;
+    isDraf: boolean;
     _count: { tickets: number };
 };
 
@@ -55,7 +56,7 @@ const AdminEventsPage = () => {
     };
 
     return (
-        <div>
+        <div className="h-screen">
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-white">
