@@ -2,6 +2,8 @@ import ChartDashboard from '~/components/admin/ChartDashboard';
 import StatCard from '~/components/ui/StatCard';
 import { getDashboardStats, getLatestEvents, getMonthlySalesData } from '~/libs/data';
 
+export const dynamic = 'force-dynamic';
+
 const Dashboard = async () => {
     const stats = await getDashboardStats();
     const latestEvents = await getLatestEvents();

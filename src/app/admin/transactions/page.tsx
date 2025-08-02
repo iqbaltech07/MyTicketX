@@ -1,6 +1,8 @@
 import React from "react";
 import TransactionTable from "~/components/admin/TransactionTabel";
-import { getAllTransactions } from "~/libs/data"; 
+import { getAllTransactions } from "~/libs/data";
+
+export const dynamic = 'force-dynamic';
 
 const AdminTransactionsPage = async () => {
   const transactions = await getAllTransactions();
@@ -10,10 +12,10 @@ const AdminTransactionsPage = async () => {
     totalAmount: trx.totalAmount.toNumber(),
     orderItems: trx.orderItems.map(item => ({
       ...item,
-      priceAtPurchase: item.priceAtPurchase.toNumber(), 
+      priceAtPurchase: item.priceAtPurchase.toNumber(),
       ticket: {
         ...item.ticket,
-        price: item.ticket.price.toNumber(), 
+        price: item.ticket.price.toNumber(),
       }
     })),
   }));

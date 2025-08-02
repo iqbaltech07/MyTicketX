@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   keywords: ["tickets", "events", "buy tickets", "sell tickets"],
 };
 
+export const dynamic = 'force-dynamic';
+
 const Home = () => {
   return (
     <PageContainer withNavbar withFooter className="bg-[#1A1A1F]">

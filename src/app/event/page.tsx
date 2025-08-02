@@ -9,13 +9,15 @@ import { getPublicAllEvents } from '~/libs/data'
 import { IEvents } from '~/types/types'
 import { AllEventsGridSkeleton, SkeletonSwiper } from '~/components/ui/Skeletons'
 
+export const dynamic = 'force-dynamic';
+
 async function AllEventsGrid() {
     const eventsData = await getPublicAllEvents();
 
     const formattedEvents: IEvents[] = eventsData.map(event => ({
         id: event.id,
         title: event.name,
-        slug: event.id,
+        slug: event.slug,
         description: event.description || '',
         thumb: event.thumb || '/images/golden-match.jpg',
         date: event.date.toISOString(),
@@ -48,7 +50,7 @@ const AllEventsPage = () => {
                     <h1 className="text-4xl md:text-5xl font-bold text-white">Find Your Favorite Event</h1>
                     <p className="mt-2 text-lg text-zinc-400">From concerts to workshops, it’s all here.</p>
                 </div>
-                
+
                 <SectionContainer className="mt-16">
                     <Suspense fallback={<SkeletonSwiper />}>
                         <LatestSection />
