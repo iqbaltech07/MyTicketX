@@ -47,8 +47,8 @@ const AllEventsPage = () => {
         <PageContainer withNavbar withFooter>
             <div className="container mx-auto px-4 py-8">
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold text-white">Find Your Favorite Event</h1>
-                    <p className="mt-2 text-lg text-zinc-400">From concerts to workshops, it’s all here.</p>
+                    <h1 className="text-4xl md:text-5xl font-bold text-white">Temukan Event Favoritmu</h1>
+                    <p className="mt-2 text-lg text-zinc-400">Dari konser hingga workshop, semuanya ada di sini.</p>
                 </div>
 
                 <SectionContainer className="mt-16">
@@ -64,7 +64,7 @@ const AllEventsPage = () => {
                 </SectionContainer>
 
                 <SectionContainer className='mt-16'>
-                    <h2 className='text-3xl font-bold mb-6'>All Events</h2>
+                    <h2 className='text-3xl font-bold mb-6'>Semua Event</h2>
                     <Suspense fallback={<AllEventsGridSkeleton />}>
                         <AllEventsGrid />
                     </Suspense>

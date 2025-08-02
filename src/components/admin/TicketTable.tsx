@@ -12,7 +12,7 @@ import {
   Button,
   Link,
 } from "@heroui/react";
-import { FaEdit, FaTrashAlt, FaQrcode } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import axiosInstance from "~/libs/axiosInstance";
 
 type Ticket = {

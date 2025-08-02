@@ -18,7 +18,7 @@ const UpcomingSection = async () => {
 
     return (
         <div>
-            <h2 className='text-[35px] font-bold'>Upcoming Event</h2>
+            <h2 className='text-[35px] font-bold'>Event yang Akan Datang</h2>
             <div className='mt-5'>
                 <EventSwiper data={formattedEvents} />
             </div>

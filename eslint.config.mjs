@@ -24,7 +24,8 @@ export default [
       "@typescript-eslint/no-wrapper-object-types": "off",
       "@typescript-eslint/no-unsafe-function-type": "off",
       "@next/next/no-img-element": "off",
-      "@next/next/no-html-link-for-pages": "off"
+      "@next/next/no-html-link-for-pages": "off",
+      "react/no-unescaped-entities": "off",
     },
   },
 ];

@@ -53,7 +53,7 @@ const AdminCategoriesPage = () => {
   };
 
   return (
-    <div className="h-screen">
+    <div className="pb-10">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white">

@@ -45,7 +45,7 @@ const EditEventPage = async ({
     }));
 
     return (
-        <div className="w-full h-dvh">
+        <div className="w-full pb-10">
             <h1 className="text-3xl font-bold tracking-tight text-white mb-4">
                 Edit Event: <span className="text-[#5AE3A8]">{eventData.name}</span>
             </h1>
