@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { RegisterSchema } from '~/schemas/formSchemas';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
-import axios, { AxiosError } from 'axios';
 import { Icons } from '../icons/Icons';
 import InputField from '../common/InputField';
 import axiosInstance from '~/libs/axiosInstance';

@@ -280,24 +280,122 @@ export async function getAllTransactions() {
   try {
     const transactions = await prisma.transaction.findMany({
       include: {
-        user: true, 
+        user: true,
         orderItems: {
           include: {
             ticket: {
               include: {
-                event: true, 
+                event: true,
               },
             },
           },
         },
       },
       orderBy: {
-        createdAt: "desc", 
+        createdAt: "desc",
       },
     });
     return transactions;
   } catch (error) {
     console.error("Error fetching all transactions:", error);
     return [];
+  }
+}
+
+export async function getSalesSummaryByMonth(month: number, year: number) {
+  try {
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0, 23, 59, 59);
+
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        status: "COMPLETED",
+        createdAt: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      include: {
+        orderItems: {
+          include: {
+            ticket: {
+              include: {
+                event: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (transactions.length === 0) {
+      return {
+        totalSales: 0,
+        transactionCount: 0,
+        ticketsSold: 0,
+        topEvent: "N/A",
+        averagePerTransaction: 0,
+        detailedTransactions: [],
+      };
+    }
+
+    const totalSales = transactions.reduce(
+      (sum, trx) => sum + trx.totalAmount.toNumber(),
+      0
+    );
+    const transactionCount = transactions.length;
+    const ticketsSold = transactions.reduce(
+      (sum, trx) =>
+        sum +
+        trx.orderItems.reduce((itemSum, item) => itemSum + item.quantity, 0),
+      0
+    );
+
+    const averagePerTransaction = totalSales / transactionCount;
+
+    const eventSales: { [key: string]: { name: string; ticketsSold: number } } =
+      {};
+    transactions.forEach((trx) => {
+      trx.orderItems.forEach((item) => {
+        const eventId = item.ticket.eventId;
+        if (!eventSales[eventId]) {
+          eventSales[eventId] = {
+            name: item.ticket.event.name,
+            ticketsSold: 0,
+          };
+        }
+        eventSales[eventId].ticketsSold += item.quantity;
+      });
+    });
+
+    const topEvent =
+      Object.values(eventSales).sort((a, b) => b.ticketsSold - a.ticketsSold)[0]
+        ?.name || "N/A";
+
+    const detailedTransactions = transactions.map((trx) => ({
+      date: trx.createdAt,
+      event: trx.orderItems[0]?.ticket.event.name || "N/A",
+      ticketsSold: trx.orderItems.reduce((sum, item) => sum + item.quantity, 0),
+      totalSales: trx.totalAmount.toNumber(),
+    }));
+
+    return {
+      totalSales,
+      transactionCount,
+      ticketsSold,
+      topEvent,
+      averagePerTransaction,
+      detailedTransactions,
+    };
+  } catch (error) {
+    console.error("Error fetching sales summary:", error);
+    return {
+      totalSales: 0,
+      transactionCount: 0,
+      ticketsSold: 0,
+      topEvent: "N/A",
+      averagePerTransaction: 0,
+      detailedTransactions: [],
+    };
   }
 }
