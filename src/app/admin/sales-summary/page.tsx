@@ -3,6 +3,7 @@ import StatCard from '~/components/ui/StatCard';
 import SalesSummaryFilter from '~/components/admin/SalesSummaryFilter';
 import { getSalesSummaryByMonth } from '~/libs/data';
 import SalesDetailTable from '~/components/admin/SalesDetailTable';
+import SalesSummaryAI from '~/components/admin/SalesSummaryAI'; 
 
 export const dynamic = 'force-dynamic';
 
@@ -44,16 +45,11 @@ const SalesSummaryPage = async ({
                 <StatCard title="Rata-rata/Transaksi" value={new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(summaryData.averagePerTransaction)} />
             </div>
 
-            <div className="mt-10 p-6 bg-[#202027] border border-zinc-800 rounded-lg">
-                <h3 className="text-lg font-semibold text-white mb-4">Ringkasan AI</h3>
-                <div className="text-zinc-400 space-y-2 leading-relaxed">
-                    <p>📊 <span className='font-bold'>Ringkasan Bulanan ({monthName} {year})</span></p>
-                    <p>
-                        Total penjualan bulan ini mencapai <span className='font-bold text-green-400'>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(summaryData.totalSales)}</span> dari <strong>{summaryData.transactionCount}</strong> transaksi, dengan total <strong>{summaryData.ticketsSold}</strong> tiket terjual.
-                        Event terlaris pada periode ini adalah <strong>"{summaryData.topEvent}"</strong>.
-                    </p>
-                </div>
-            </div>
+            <SalesSummaryAI 
+                summaryData={summaryData}
+                monthName={monthName}
+                year={year}
+            />
 
             <div className="mt-10">
                 <h3 className="text-lg font-semibold text-white mb-4">Detail Transaksi</h3>

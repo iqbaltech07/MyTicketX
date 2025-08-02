@@ -13,3 +13,28 @@ export interface IEvents {
   date: string;
   time: string;
 }
+
+export interface HistoryItem {
+  role: "user" | "model";
+  parts: { text: string }[];
+}
+
+export interface GeminiRequestBody {
+  geminiModel: string;
+  content: string;
+  geminiHistory?: HistoryItem[];
+}
+
+export interface GeminiSuccessResponse {
+  body: {
+    choices: Array<{
+      message: {
+        content: any;
+      };
+    }>;
+  };
+}
+
+export interface GeminiErrorResponse {
+  error: string;
+}
