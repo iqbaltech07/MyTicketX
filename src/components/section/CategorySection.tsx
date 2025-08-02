@@ -9,7 +9,7 @@ const CategorySection = async () => {
 
     return (
         <SectionContainer>
-            <h2 className='text-3xl font-bold mb-6 text-center'>Explore by Category</h2>
+            <h2 className='text-3xl font-bold mb-6 text-center'>Cari Berdasarkan Kategori</h2>
             <div className="flex flex-wrap justify-center gap-3">
                 {categories.map(category => (
                     <Link href={`/event?category=${category.name.toLowerCase()}`} key={category.id}>

@@ -45,11 +45,12 @@ const SearchSection = () => {
   return (
     <div className="relative z-10 text-center px-4">
       <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-        Explore and Discover the Best Events
+        Jelajahi dan Temukan Event Terbaik
       </h1>
       <p className="mt-4 max-w-2xl mx-auto text-lg text-zinc-300">
-        From music concerts to tech seminars, everything is on MyTicketX.
+        Dari konser musik hingga seminar teknologi, semuanya ada di MyTicketX.
       </p>
+
       <div className="mt-8 max-w-xl mx-auto relative">
         <div className="flex items-center gap-2">
           <Input
