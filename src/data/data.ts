@@ -1,4 +1,4 @@
-import { IBanners, IEvents } from "~/types/types";
+import { IBanners } from "~/types/types";
 
 const banners: IBanners[] = [
   {
@@ -34,8 +34,8 @@ const banners: IBanners[] = [
 //     slug: "golden-match-football-1",
 //     description:
 //       "Experience the thrill of the ultimate football showdown! Join us for an unforgettable day full of sports, fun, and excitement.",
-//     date: "2028-03-01", 
-//     time: "10:00:00", 
+//     date: "2028-03-01",
+//     time: "10:00:00",
 //     thumb: "/images/golden-match.jpg",
 //   },
 //   {

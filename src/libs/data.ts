@@ -214,25 +214,31 @@ export async function getEventById(slug: string) {
 
 export async function getActiveTicketsByUserId(userId: string) {
   try {
-    const completedOrderItems = await prisma.orderItem.findMany({
+    const purchasedTickets = await prisma.purchasedTicket.findMany({
       where: {
-        transaction: {
-          userId: userId,
-          status: 'COMPLETED',
+        orderItem: {
+          transaction: {
+            userId: userId,
+            status: "COMPLETED",
+          },
         },
       },
       include: {
-        ticket: {
+        orderItem: {
           include: {
-            event: true, 
+            ticket: {
+              include: {
+                event: true,
+              },
+            },
           },
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
     });
-    return completedOrderItems;
+    return purchasedTickets;
   } catch (error) {
     console.error("Error fetching active tickets:", error);
     return [];
@@ -247,26 +253,51 @@ export async function getPurchaseHistoryByUserId(userId: string) {
       },
       include: {
         orderItems: {
-          take: 1,
           include: {
             ticket: {
               include: {
                 event: {
-                  select: { name: true }
-                }
-              }
-            }
-          }
-        }
+                  select: { name: true },
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
     });
-    
+
     return transactions;
   } catch (error) {
     console.error("Error fetching purchase history:", error);
+    return [];
+  }
+}
+
+export async function getAllTransactions() {
+  try {
+    const transactions = await prisma.transaction.findMany({
+      include: {
+        user: true, 
+        orderItems: {
+          include: {
+            ticket: {
+              include: {
+                event: true, 
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc", 
+      },
+    });
+    return transactions;
+  } catch (error) {
+    console.error("Error fetching all transactions:", error);
     return [];
   }
 }
