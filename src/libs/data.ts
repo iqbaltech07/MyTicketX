@@ -42,13 +42,15 @@ export async function getDashboardStats() {
 export async function getLatestEvents() {
   try {
     const events = await prisma.event.findMany({
-      take: 5,
+      take: 10,
       orderBy: {
         createdAt: "desc",
       },
       select: {
         id: true,
         name: true,
+        thumb: true,
+        createdAt: true,
       },
     });
     return events;

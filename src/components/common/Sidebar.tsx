@@ -29,7 +29,7 @@ const Sidebar = () => {
     }
 
     return (
-        <aside className="w-64 flex-shrink-0 bg-[#202027] p-5 flex flex-col h-auto">
+        <aside className="w-64 flex-shrink-0 bg-[#202027] p-5 flex flex-col h-screen"> 
             <div>
                 <div className="mb-10">
                     <Link href="/admin/dashboard">

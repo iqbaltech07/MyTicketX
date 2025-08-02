@@ -20,7 +20,7 @@ const SalesSummaryPage = async ({
     const monthName = new Date(year, month - 1).toLocaleString('id-ID', { month: 'long' });
 
     return (
-        <div className="h-screen pb-10">
+        <div className="pb-10">
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-white">
@@ -45,7 +45,7 @@ const SalesSummaryPage = async ({
             </div>
 
             <div className="mt-10 p-6 bg-[#202027] border border-zinc-800 rounded-lg">
-                <h3 className="text-lg font-semibold text-white mb-4">Ringkasan Otomatis</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">Ringkasan AI</h3>
                 <div className="text-zinc-400 space-y-2 leading-relaxed">
                     <p>📊 <span className='font-bold'>Ringkasan Bulanan ({monthName} {year})</span></p>
                     <p>
