@@ -9,6 +9,8 @@ import { getEventById } from '~/libs/data'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({
     params,
 }: {

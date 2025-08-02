@@ -7,6 +7,8 @@ import { redirect } from 'next/navigation';
 import { getActiveTicketsByUserId, getPurchaseHistoryByUserId } from '~/libs/data';
 import { authOptions } from '~/libs/AuthOption';
 
+export const dynamic = 'force-dynamic';
+
 const ProfileUserPage = async () => {
     const session = await getServerSession(authOptions);
 

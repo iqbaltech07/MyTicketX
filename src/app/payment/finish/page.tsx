@@ -3,6 +3,8 @@ import { FaCheckCircle, FaTimesCircle, FaClock } from 'react-icons/fa';
 import { verifyTransactionStatus } from '~/actions/transaction.actions';
 import PageContainer from '~/components/layouts/PageContainer';
 
+export const dynamic = 'force-dynamic';
+
 const StatusIcon = ({ status }: { status: string }) => {
     if (status === 'success') {
         return <FaCheckCircle className="w-16 h-16 text-green-400" />;
@@ -43,7 +45,7 @@ const PaymentFinishPage = async ({
 
     if (!orderId) {
         return (
-            <PageContainer>
+            <PageContainer className='h-screen'>
                 <div className="flex flex-col items-center justify-center text-center h-[60vh]">
                     <StatusIcon status="failed" />
                     <StatusMessage status="failed" message="ID Pesanan tidak valid atau tidak ditemukan." />
