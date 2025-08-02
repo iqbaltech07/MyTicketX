@@ -2,7 +2,6 @@
 
 import Midtrans from "midtrans-client";
 import { prisma } from "~/libs/prisma";
-import { revalidatePath } from "next/cache";
 
 const core = new Midtrans.CoreApi({
   isProduction: false,
@@ -24,23 +23,32 @@ export async function verifyTransactionStatus(orderId: string) {
     if (!transaction) {
       throw new Error("Transaksi tidak ditemukan.");
     }
-
-    if (transactionStatus == 'capture' || transactionStatus == 'settlement') {
-        if (fraudStatus == 'accept') {
-            await prisma.transaction.update({
-                where: { id: orderId },
-                data: { status: 'COMPLETED' },
-            });
-
-            for (const item of transaction.orderItems) {
-                await prisma.ticket.update({
-                    where: { id: item.ticketId },
-                    data: { quantity: { decrement: item.quantity } },
+    
+    if ((transactionStatus == 'capture' || transactionStatus == 'settlement') && fraudStatus == 'accept') {
+        if (transaction.status !== 'COMPLETED') {
+            await prisma.$transaction(async (tx) => {
+                await tx.transaction.update({
+                    where: { id: orderId },
+                    data: { status: 'COMPLETED' },
                 });
-            }
-            
-            return { status: 'success', message: 'Pembayaran berhasil!' };
+
+                for (const item of transaction.orderItems) {
+                    await tx.ticket.update({
+                        where: { id: item.ticketId },
+                        data: { quantity: { decrement: item.quantity } },
+                    });
+
+                    const purchasedTicketsData = Array.from({ length: item.quantity }).map(() => ({
+                        orderItemId: item.id,
+                    }));
+                    
+                    await tx.purchasedTicket.createMany({
+                        data: purchasedTicketsData,
+                    });
+                }
+            });
         }
+        return { status: 'success', message: 'Pembayaran berhasil!' };
     } else if (transactionStatus == 'pending') {
         await prisma.transaction.update({
             where: { id: orderId },
@@ -59,7 +67,4 @@ export async function verifyTransactionStatus(orderId: string) {
     console.error("Verification Error:", error);
     return { status: 'error', message: 'Terjadi kesalahan saat memverifikasi pembayaran.' };
   }
-
-  revalidatePath('/profile');
-  return { status: 'no_change', message: 'Status tidak berubah.' };
 }

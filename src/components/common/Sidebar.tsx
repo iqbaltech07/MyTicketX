@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaTachometerAlt, FaCalendarAlt, FaTicketAlt, FaTags } from 'react-icons/fa';
+import { FaTachometerAlt, FaCalendarAlt, FaTags, FaReceipt } from 'react-icons/fa';
 
 const navItems = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: FaTachometerAlt },
     { name: 'Events', href: '/admin/events', icon: FaCalendarAlt },
     { name: 'Categories', href: '/admin/categories', icon: FaTags },
+    { name: 'Transactions', href: '/admin/transactions', icon: FaReceipt },
 ];
 
 const Sidebar = () => {

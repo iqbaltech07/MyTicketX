@@ -79,7 +79,7 @@ model Event {
   location    String?
   description String?  @db.Text
   organizer   String?
-  isDraf     Boolean  @default(true)
+  isDraf      Boolean  @default(true)
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
   tickets     Ticket[]
@@ -124,6 +124,18 @@ model OrderItem {
   quantity        Int
   priceAtPurchase Decimal
 
+  purchasedTickets PurchasedTicket[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PurchasedTicket {
+  id          String    @id @default(cuid())
+  orderItemId String
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  qrCodeId    String    @unique @default(cuid())
+  status      String    @default("VALID") 
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

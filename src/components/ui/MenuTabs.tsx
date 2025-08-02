@@ -16,6 +16,7 @@ type MenuTabsProps = {
             imageUrl: string;
         };
         ticketType: string;
+        qrCode: string;
     }[];
     purchaseHistory: {
         id: string;
@@ -42,7 +43,7 @@ const MenuTabs = ({ activeTickets, purchaseHistory }: MenuTabsProps) => {
             }>
                 <Card className="bg-transparent shadow-none">
                     <CardBody>
-                        <div className="space-y-6">
+                        <div className="space-y-6 h-[700px] overflow-y-auto">
                             {activeTickets.length > 0 ? (
                                 activeTickets.map((ticket) => (
                                     <TicketCard key={ticket.id} {...ticket} />
@@ -62,7 +63,7 @@ const MenuTabs = ({ activeTickets, purchaseHistory }: MenuTabsProps) => {
             }>
                 <Card className="bg-transparent shadow-none">
                     <CardBody>
-                        <div className="space-y-4">
+                        <div className="space-y-4  h-[700px] overflow-y-auto">
                             {purchaseHistory.length > 0 ? (
                                 purchaseHistory.map((trx) => (
                                     <HistoryItem key={trx.id} {...trx} />
