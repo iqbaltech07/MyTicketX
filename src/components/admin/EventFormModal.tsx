@@ -168,7 +168,7 @@ export default function EventFormModal({
                                 name="categoryId"
                                 control={control}
                                 render={({ field }) => (
-                                    <Select {...field} label="Kategori" placeholder="Pilih kategori" variant="bordered" errorMessage={errors.categoryId?.message} isInvalid={!!errors.categoryId} classNames={{ value: "!text-white" }}>
+                                    <Select {...field} label="Kategori" placeholder="Pilih kategori" variant="bordered" errorMessage={errors.categoryId?.message} isInvalid={!!errors.categoryId} classNames={{ value: "!text-black", selectorIcon: "!text-black" }}>
                                         {categories.map((cat) => (
                                             <SelectItem key={cat.id} textValue={cat.name} className="text-black">
                                                 {cat.name}
