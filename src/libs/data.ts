@@ -91,11 +91,11 @@ export async function getMonthlySalesData() {
 
     const salesByMonth: { [key: string]: number } = {};
 
-    transactions.forEach((trx) => {
+    transactions.forEach((trx: any) => {
       const monthIndex = trx.createdAt.getMonth();
       const monthName = monthNames[monthIndex];
       const totalQuantityInTrx = trx.orderItems.reduce(
-        (sum, item) => sum + item.quantity,
+        (sum: any, item: any) => sum + item.quantity,
         0
       );
 
@@ -173,10 +173,26 @@ export async function getPublicCategories() {
   }
 }
 
-export async function getPublicAllEvents() {
+export async function getPublicAllEvents(categoryName?: string) {
   try {
+    const whereClause: {
+      isDraf: boolean;
+      category?: { name: { equals: string; mode: "insensitive" } };
+    } = {
+      isDraf: false,
+    };
+
+    if (categoryName) {
+      whereClause.category = {
+        name: {
+          equals: categoryName,
+          mode: "insensitive",
+        },
+      };
+    }
+
     const events = await prisma.event.findMany({
-      where: { isDraf: false },
+      where: whereClause,
       orderBy: {
         date: "desc",
       },
@@ -342,14 +358,17 @@ export async function getSalesSummaryByMonth(month: number, year: number) {
     }
 
     const totalSales = transactions.reduce(
-      (sum, trx) => sum + trx.totalAmount.toNumber(),
+      (sum: any, trx: any) => sum + trx.totalAmount.toNumber(),
       0
     );
     const transactionCount = transactions.length;
     const ticketsSold = transactions.reduce(
-      (sum, trx) =>
+      (sum: any, trx: any) =>
         sum +
-        trx.orderItems.reduce((itemSum, item) => itemSum + item.quantity, 0),
+        trx.orderItems.reduce(
+          (itemSum: any, item: any) => itemSum + item.quantity,
+          0
+        ),
       0
     );
 
@@ -357,8 +376,8 @@ export async function getSalesSummaryByMonth(month: number, year: number) {
 
     const eventSales: { [key: string]: { name: string; ticketsSold: number } } =
       {};
-    transactions.forEach((trx) => {
-      trx.orderItems.forEach((item) => {
+    transactions.forEach((trx: any) => {
+      trx.orderItems.forEach((item: any) => {
         const eventId = item.ticket.eventId;
         if (!eventSales[eventId]) {
           eventSales[eventId] = {
@@ -374,10 +393,13 @@ export async function getSalesSummaryByMonth(month: number, year: number) {
       Object.values(eventSales).sort((a, b) => b.ticketsSold - a.ticketsSold)[0]
         ?.name || "N/A";
 
-    const detailedTransactions = transactions.map((trx) => ({
+    const detailedTransactions = transactions.map((trx: any) => ({
       date: trx.createdAt,
       event: trx.orderItems[0]?.ticket.event.name || "N/A",
-      ticketsSold: trx.orderItems.reduce((sum, item) => sum + item.quantity, 0),
+      ticketsSold: trx.orderItems.reduce(
+        (sum: any, item: any) => sum + item.quantity,
+        0
+      ),
       totalSales: trx.totalAmount.toNumber(),
     }));
 

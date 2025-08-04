@@ -21,7 +21,7 @@ const ProfileUserPage = async () => {
         getPurchaseHistoryByUserId(session.user.id),
     ]);
 
-    const formattedActiveTickets = activeTicketsData.map(purchasedTicket => {
+    const formattedActiveTickets = activeTicketsData.map((purchasedTicket: any) => {
         const order = purchasedTicket.orderItem;
         return {
             id: purchasedTicket.id,
@@ -36,7 +36,7 @@ const ProfileUserPage = async () => {
         };
     });
 
-    const formattedPurchaseHistory = purchaseHistoryData.map(trx => {
+    const formattedPurchaseHistory = purchaseHistoryData.map((trx: any) => {
         let statusString = 'Completed';
         if (trx.status === 'PENDING') statusString = 'Pending';
         if (trx.status === 'FAILED') statusString = 'Failed';

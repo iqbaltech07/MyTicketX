@@ -5,17 +5,17 @@ import { withAuth } from "./middleware/withAuth";
 export function mainMiddleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith('/verify')) {
-    const emailCookie = req.cookies.get('emailForVerification');
+  if (pathname.startsWith("/verify")) {
+    const emailCookie = req.cookies.get("emailForVerification");
     if (!emailCookie) {
-      return NextResponse.redirect(new URL('/register', req.url));
+      return NextResponse.redirect(new URL("/register", req.url));
     }
   }
 
   return NextResponse.next();
 }
 
-const publicPages = ["/", "/login", "/register", "/verify", "/admin/login", "/payment/finish"];
+const publicPages = ["/", "/login", "/register", "/verify", "/admin/login"];
 
 export default withAuth(mainMiddleware, publicPages);
 

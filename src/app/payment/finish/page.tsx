@@ -46,7 +46,7 @@ const PaymentFinishPage = async ({
     if (!orderId) {
         return (
             <PageContainer className='h-screen'>
-                <div className="flex flex-col items-center justify-center text-center h-[60vh]">
+                <div className="flex flex-col items-center justify-center text-center h-full">
                     <StatusIcon status="failed" />
                     <StatusMessage status="failed" message="ID Pesanan tidak valid atau tidak ditemukan." />
                     <Link href="/" className="mt-6 bg-[#5AE3A8] text-zinc-900 font-bold py-2 px-4 rounded">

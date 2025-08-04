@@ -11,10 +11,10 @@ import { AllEventsGridSkeleton, SkeletonSwiper } from '~/components/ui/Skeletons
 
 export const dynamic = 'force-dynamic';
 
-async function AllEventsGrid() {
-    const eventsData = await getPublicAllEvents();
+async function AllEventsGrid({ category }: { category?: string }) {
+    const eventsData = await getPublicAllEvents(category);
 
-    const formattedEvents: IEvents[] = eventsData.map(event => ({
+    const formattedEvents: IEvents[] = eventsData.map((event: any) => ({
         id: event.id,
         title: event.name,
         slug: event.slug,
@@ -23,6 +23,11 @@ async function AllEventsGrid() {
         date: event.date.toISOString(),
         time: event.date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
     }));
+
+    if (formattedEvents.length === 0) {
+        return <p className="text-zinc-400 text-center col-span-full">Tidak ada event yang ditemukan untuk kategori ini.</p>;
+    }
+
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -42,7 +47,13 @@ async function AllEventsGrid() {
 }
 
 
-const AllEventsPage = () => {
+const AllEventsPage = async ({
+    searchParams,
+}: {
+    searchParams: Promise<{ category?: string }>;
+}) => {
+    const { category } = await searchParams;
+
     return (
         <PageContainer withNavbar withFooter>
             <div className="container mx-auto px-4 py-8">
@@ -64,9 +75,9 @@ const AllEventsPage = () => {
                 </SectionContainer>
 
                 <SectionContainer className='mt-16'>
-                    <h2 className='text-3xl font-bold mb-6'>Semua Event</h2>
+                    <h2 className='text-3xl font-bold mb-6'>Semua Event {category && `- Kategori ${category.charAt(0).toUpperCase() + category.slice(1)}`}</h2>
                     <Suspense fallback={<AllEventsGridSkeleton />}>
-                        <AllEventsGrid />
+                        <AllEventsGrid category={category} />
                     </Suspense>
                 </SectionContainer>
             </div>
